@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
+    //Loads user from DB for authentication
+
     private final UserRepository userRepository;
 
     @Override

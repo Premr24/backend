@@ -12,6 +12,8 @@ import lombok.*;
 @Table(name = "role")
 public class Role {
 
+    //Defines roles like ADMIN, STUDENT, etc.
+
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;

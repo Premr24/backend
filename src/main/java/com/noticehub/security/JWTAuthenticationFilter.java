@@ -23,6 +23,8 @@ import java.io.IOException;
 @Slf4j
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
+    //Checks and authenticates token on every request
+
     private final JwtHelper jwtHelper;
     private final UserDetailsService userDetailsService;
 

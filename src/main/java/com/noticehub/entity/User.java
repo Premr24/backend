@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "user")
 public class User {
 
+    //Defines User table with fields and role relation
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,20 +23,20 @@ public class User {
     @Column(nullable = false, unique = true, length = 50)
     private String email;
 
-    @Column(length = 50)
+    @Column(length = 100)
     private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
     @Builder.Default
-    private Status status = Status.active;
+    private Status status = Status.ACTIVE;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
     public enum Status {
-        active,
-        inactive
+        ACTIVE,
+        INACTIVE
     }
 }

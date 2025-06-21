@@ -5,6 +5,7 @@ import com.noticehub.model.JwtResponse;
 import com.noticehub.model.LoginRequest;
 import com.noticehub.repository.UserRepository;
 import com.noticehub.security.JwtHelper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,12 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
+    //Provides /login endpoint
+
     private final AuthenticationManager authenticationManager;
     private final JwtHelper jwtHelper;
     private final UserRepository userRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
 
         // Authenticate using Spring Security
         authenticationManager.authenticate(
@@ -39,22 +42,30 @@ public class AuthController {
                 .orElseThrow(() ->
                         new RuntimeException("User not found"));
 
+        // Compare requested role with DB role
+        String inputRole = loginRequest.getRole().toUpperCase();
+        String userRole = user.getRole().getName().toUpperCase();
+
+        if (!inputRole.equals(userRole)) {
+            throw new RuntimeException("Role mismatch. Expected: " + userRole + ", Provided: " + inputRole);
+        }
+
         // Generate token
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                java.util.List.of(() -> "ROLE_" + user.getRole().getName().toUpperCase())
+                java.util.List.of(() -> "ROLE_" + userRole)
         );
 
-        String token = jwtHelper.generateToken(userDetails, user.getRole().getName());
-
+        String token = jwtHelper.generateToken(userDetails, userRole);
 
         // Build response
         JwtResponse response = JwtResponse.builder()
                 .token(token)
                 .email(user.getEmail())
-                .role(user.getRole().getName())
+                .role(userRole)
                 .build();
+
         return ResponseEntity.ok(response);
     }
 }
