@@ -2,13 +2,13 @@ package com.noticehub.model;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class JwtResponse {
 
-    private String username;
-    private String jwtToken;
+    private String token;
+    private String email;
+    private String role;
 }

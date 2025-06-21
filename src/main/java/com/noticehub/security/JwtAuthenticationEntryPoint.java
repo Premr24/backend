@@ -13,10 +13,13 @@ import java.io.PrintWriter;
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+                         AuthenticationException authException) throws IOException, ServletException {
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        PrintWriter printWriter = response.getWriter();
-        printWriter.println("Access Denied!!" + authException.getMessage());
+        response.setContentType("application/json");
+
+        PrintWriter writer = response.getWriter();
+        writer.write("{\"error\": \"Access Denied\", \"message\": \"" + authException.getMessage() + "\"}");
     }
 }
