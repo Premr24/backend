@@ -9,7 +9,6 @@ import com.noticehub.service.LevelService;
 import org.springframework.stereotype.Service;
 
 
-import java.nio.file.ReadOnlyFileSystemException;
 import java.util.List;
 
 @Service
@@ -51,6 +50,15 @@ public class LevelImpl implements LevelService {
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Level does not exists!"));
         return LevelMapper.mapToLevelDto(level);
+    }
+
+    @Override
+    public LevelDto getLevelByName(String name) {
+
+        Level level = levelRepository
+                .findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException("Level not found!!" + name));
+        return null;
     }
 
     @Override

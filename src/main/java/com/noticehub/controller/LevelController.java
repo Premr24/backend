@@ -19,7 +19,7 @@ public class LevelController {
     }
 
     //REST API to add Level
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<LevelDto> addLevel(@RequestBody LevelDto levelDto){
 
         return new ResponseEntity<>(levelService.createLevel(levelDto), HttpStatus.CREATED);
@@ -34,10 +34,18 @@ public class LevelController {
     }
 
     // REST API to get level
-    @GetMapping("{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<LevelDto> getLevelById(@PathVariable Long id) {
         LevelDto levelDto = levelService
                 .getLevelById(id);
+        return ResponseEntity.ok(levelDto);
+    }
+
+    // REST API to get level
+    @GetMapping("/get/{name}")
+    public ResponseEntity<LevelDto> getLevelByName(@PathVariable String name) {
+        LevelDto levelDto = levelService
+                .getLevelByName(name);
         return ResponseEntity.ok(levelDto);
     }
 

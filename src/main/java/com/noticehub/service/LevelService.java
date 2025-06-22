@@ -12,6 +12,8 @@ public interface LevelService {
 
     LevelDto getLevelById(Long id);
 
+    LevelDto getLevelByName(String name);
+
     List<LevelDto> getLevel();
 
     void deleteLevel(Long id);
