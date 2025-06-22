@@ -1,4 +1,4 @@
-package com.noticehub.model;
+package com.noticehub.dto;
 
 import lombok.*;
 

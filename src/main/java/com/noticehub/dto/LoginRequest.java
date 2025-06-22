@@ -1,4 +1,4 @@
-package com.noticehub.model;
+package com.noticehub.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -5,7 +5,6 @@ import lombok.*;
 
 @Entity
 @Data
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -18,7 +17,6 @@ public class Role {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Getter
     @Column(nullable = false)
     private String name;
 

@@ -1,8 +1,8 @@
 package com.noticehub.controller;
 
 import com.noticehub.entity.User;
-import com.noticehub.model.JwtResponse;
-import com.noticehub.model.LoginRequest;
+import com.noticehub.dto.JwtResponse;
+import com.noticehub.dto.LoginRequest;
 import com.noticehub.repository.UserRepository;
 import com.noticehub.security.JwtHelper;
 import jakarta.validation.Valid;
