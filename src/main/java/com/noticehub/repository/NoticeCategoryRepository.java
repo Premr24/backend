@@ -1,4 +1,7 @@
 package com.noticehub.repository;
 
-public interface NoticeCategoryRepository {
+import com.noticehub.entity.NoticeCategory;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface NoticeCategoryRepository extends JpaRepository<NoticeCategory, Long> {
 }

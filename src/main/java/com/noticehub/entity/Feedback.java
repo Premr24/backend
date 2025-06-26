@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "notice")
-public class Notice {
+@Table(name = "feedback")
+public class Feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,14 +26,10 @@ public class Notice {
     @Column(length = 500)
     private String description;
 
-    @Lob
-    @Column(columnDefinition = "MEDIUMBLOB")
-    private byte[] file;
-
     @Column(nullable = false)
     private LocalDateTime datetime;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "notice_category_id", nullable = false)
-    private NoticeCategory noticeCategory;
+    @OneToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
 }

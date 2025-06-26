@@ -1,4 +1,6 @@
 package com.noticehub.dto;
 
-public record NoticeCategoryDto() {
+public record NoticeCategoryDto(
+        Long id,
+        String name) {
 }

@@ -1,4 +1,7 @@
 package com.noticehub.repository;
 
-public interface ProgramRepository {
+import com.noticehub.entity.Program;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProgramRepository extends JpaRepository<Program, Long> {
 }

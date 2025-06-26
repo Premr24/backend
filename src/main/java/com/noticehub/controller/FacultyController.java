@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/faculty")
+@RequestMapping("/api/admin/faculty")
 public class FacultyController {
 
     private final FacultyService facultyService;
@@ -17,14 +17,14 @@ public class FacultyController {
     }
 
     // REST API to add faculty
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<FacultyDto> addFaculty(@RequestBody FacultyDto facultyDto) {
 
         return new ResponseEntity<>(facultyService.createFaculty(facultyDto), HttpStatus.CREATED);
     }
 
     // REST API to update faculty
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<FacultyDto> updateFaculty(@PathVariable Long id,
                                                     @RequestBody FacultyDto updateFaculty) {
 
@@ -33,7 +33,7 @@ public class FacultyController {
     }
 
     // REST API to get faculty
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<FacultyDto> getFacultyById(@PathVariable Long id) {
         FacultyDto facultyDto = facultyService
                 .getFacultyById(id);
@@ -41,7 +41,7 @@ public class FacultyController {
     }
 
     // REST API to delete faculty
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteFaculty(@PathVariable Long id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok("Faculty deleted successfully.");

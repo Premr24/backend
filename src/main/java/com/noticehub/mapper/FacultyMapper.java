@@ -1,9 +1,7 @@
 package com.noticehub.mapper;
 
 import com.noticehub.dto.FacultyDto;
-import com.noticehub.dto.LevelDto;
 import com.noticehub.entity.Faculty;
-import com.noticehub.entity.Level;
 
 public class FacultyMapper {
 

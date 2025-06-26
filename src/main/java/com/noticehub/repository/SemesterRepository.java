@@ -1,4 +1,7 @@
 package com.noticehub.repository;
 
-public interface SemesterRepository {
+import com.noticehub.entity.Semester;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SemesterRepository extends JpaRepository<Semester, Long> {
 }

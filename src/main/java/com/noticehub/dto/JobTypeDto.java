@@ -1,4 +1,6 @@
 package com.noticehub.dto;
 
-public record JobTypeDto() {
+public record JobTypeDto(
+        Long id,
+        String name) {
 }

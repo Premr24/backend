@@ -1,4 +1,7 @@
 package com.noticehub.repository;
 
-public interface DesignationRepository {
+import com.noticehub.entity.Designation;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DesignationRepository extends JpaRepository<Designation, Long> {
 }

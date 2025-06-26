@@ -1,4 +1,6 @@
 package com.noticehub.dto;
 
-public record SemesterDto() {
+public record SemesterDto(
+        Long id,
+        String name ) {
 }

@@ -1,4 +1,4 @@
-package com.noticehub.dto;
+package com.noticehub.response;
 
 import lombok.*;
 

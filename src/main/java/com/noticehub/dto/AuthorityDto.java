@@ -1,4 +1,6 @@
 package com.noticehub.dto;
 
-public record AuthorityDto() {
+public record AuthorityDto(
+        Long id,
+        String name ) {
 }

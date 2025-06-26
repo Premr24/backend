@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "role")
+@Table(name = "notice_category")
 public class NoticeCategory {
 
     @Id
