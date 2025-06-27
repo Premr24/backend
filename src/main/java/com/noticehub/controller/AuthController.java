@@ -42,13 +42,8 @@ public class AuthController {
                 .orElseThrow(() ->
                         new RuntimeException("User not found"));
 
-        // Compare requested role with DB role
-        String inputRole = loginRequest.getRole().toUpperCase();
-        String userRole = user.getRole().getName().toUpperCase();
+        String userRole = user.getRole().getName().toUpperCase(); // Just fetch from DB
 
-        if (!inputRole.equals(userRole)) {
-            throw new RuntimeException("Role mismatch. Expected: " + userRole + ", Provided: " + inputRole);
-        }
 
         // Generate token
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(

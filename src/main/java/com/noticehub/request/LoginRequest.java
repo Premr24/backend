@@ -8,7 +8,6 @@ import lombok.Data;
 public class LoginRequest {
 
     //DTO for login email/password
-
     @NotBlank
     @Email
     private String email;
@@ -16,6 +15,4 @@ public class LoginRequest {
     @NotBlank
     private String password;
 
-    @NotBlank
-    private String role;
 }

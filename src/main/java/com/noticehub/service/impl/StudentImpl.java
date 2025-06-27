@@ -3,6 +3,7 @@ package com.noticehub.service.impl;
 import com.noticehub.dto.StudentDto;
 import com.noticehub.entity.*;
 import com.noticehub.enums.Status;
+import com.noticehub.exception.DuplicateResourceException;
 import com.noticehub.exception.ResourceNotFoundException;
 import com.noticehub.mapper.StudentMapper;
 import com.noticehub.repository.*;
@@ -40,6 +41,27 @@ public class StudentImpl implements StudentService {
     @Override
     @Transactional
     public StudentDto createStudent(StudentDto studentDto) {
+
+        // Check for duplicates
+        StringBuilder duplicateFields = new StringBuilder();
+
+        if (studentRepository.existsByEmail(studentDto.email())) {
+            duplicateFields.append("Email, ");
+        }
+
+        if (studentRepository.existsByContact(studentDto.contact())) {
+            duplicateFields.append("Contact, ");
+        }
+
+        if (studentRepository.existsByIdNumber(studentDto.idNumber())) {
+            duplicateFields.append("ID Number, ");
+        }
+
+        if (!duplicateFields.isEmpty()) {
+            String fields = duplicateFields.substring(0, duplicateFields.length() - 2);
+            throw new DuplicateResourceException("Student with same " + fields + " already exists.");
+        }
+
         Role studentRole = roleRepository.findByName("STUDENT")
                 .orElseThrow(() -> new ResourceNotFoundException("Role 'STUDENT' not found"));
 

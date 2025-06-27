@@ -4,6 +4,7 @@ import com.noticehub.dto.TeacherDto;
 import com.noticehub.entity.*;
 import com.noticehub.enums.Gender;
 import com.noticehub.enums.Status;
+import com.noticehub.exception.DuplicateResourceException;
 import com.noticehub.exception.ResourceNotFoundException;
 import com.noticehub.mapper.TeacherMapper;
 import com.noticehub.repository.*;
@@ -46,38 +47,56 @@ public class TeacherImpl implements TeacherService {
     @Override
     @Transactional
     public TeacherDto createTeacher(TeacherDto teacherDto) {
-        Role teacherRole = roleRepository.findByName("TEACHER")
-                .orElseThrow(() -> new ResourceNotFoundException("Role 'TEACHER' not found"));
+        // Check for duplicates
+        StringBuilder duplicateFields = new StringBuilder();
 
-        // hash password
+        if (teacherRepository.existsByEmail(teacherDto.email())) {
+            duplicateFields.append("Email, ");
+        }
+
+        if (teacherRepository.existsByContact(teacherDto.contact())) {
+            duplicateFields.append("Contact, ");
+        }
+
+        if (teacherRepository.existsByIdNumber(teacherDto.idNumber())) {
+            duplicateFields.append("ID Number, ");
+        }
+
+        if (!duplicateFields.isEmpty()) {
+            String fields = duplicateFields.substring(0, duplicateFields.length() - 2);
+            throw new DuplicateResourceException("Teacher with same" + fields + " already exists.");
+        }
+
+        // Role
+        Role teacherRole = roleRepository.findByName("TEACHER")
+                .orElseThrow(() -> new ResourceNotFoundException("Role 'TEACHER' does not exists!"));
+
+        // Create User
         User user = User.builder()
                 .email(teacherDto.email())
                 .password(passwordEncoder.encode(teacherDto.password()))
                 .role(teacherRole)
                 .status(User.Status.ACTIVE)
                 .build();
-
         userRepository.save(user);
 
+        // Other entities
+        Department department = departmentRepository.findById(teacherDto.departmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Department does not exists!"));
 
-        Department department = departmentRepository
-                .findById(teacherDto.departmentId())
-                .orElseThrow(() -> new ResourceNotFoundException("Department not found"));
+        Designation designation = designationRepository.findById(teacherDto.designationId())
+                .orElseThrow(() -> new ResourceNotFoundException("Designation does not exists!"));
 
-        Designation designation = designationRepository
-                .findById(teacherDto.designationId())
-                .orElseThrow(() -> new ResourceNotFoundException("Designation not found"));
+        Authority authority = authorityRepository.findById(teacherDto.authorityId())
+                .orElseThrow(() -> new ResourceNotFoundException("Authority does not exists!"));
 
-        Authority authority = authorityRepository
-                .findById(teacherDto.authorityId())
-                .orElseThrow(() -> new ResourceNotFoundException("Authority not found"));
+        JobType jobType = jobTypeRepository.findById(teacherDto.jobTypeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Job Type does not exists!"));
 
-        JobType jobType = jobTypeRepository.findById(teacherDto
-                        .jobTypeId())
-                .orElseThrow(() -> new ResourceNotFoundException("Job Type not found"));
-
+        // Save Teacher
         Teacher teacher = TeacherMapper.mapToTeacher(teacherDto, user, department, designation, authority, jobType);
         Teacher saved = teacherRepository.save(teacher);
+
         return TeacherMapper.mapToTeacherDto(saved);
     }
 
@@ -86,7 +105,7 @@ public class TeacherImpl implements TeacherService {
 
         Teacher teacher = teacherRepository
                 .findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Teacher not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Teacher does not exists!"));
 
         // Keep current linked user
         User user = teacher.getUser();
@@ -102,19 +121,19 @@ public class TeacherImpl implements TeacherService {
 
         Department department = departmentRepository
                 .findById(dto.departmentId())
-                .orElseThrow(() -> new ResourceNotFoundException("Department not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Department does not exists!"));
 
         Designation designation = designationRepository
                 .findById(dto.designationId())
-                .orElseThrow(() -> new ResourceNotFoundException("Designation not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Designation does not exists!"));
 
         Authority authority = authorityRepository
                 .findById(dto.authorityId())
-                .orElseThrow(() -> new ResourceNotFoundException("Authority not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Authority does not exists!"));
 
         JobType jobType = jobTypeRepository
                 .findById(dto.jobTypeId())
-                .orElseThrow(() -> new ResourceNotFoundException("Job Type not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Job Type does not exists!"));
 
         teacher.setIdNumber(dto.idNumber());
         teacher.setFirstName(dto.firstName());
@@ -143,7 +162,7 @@ public class TeacherImpl implements TeacherService {
     @Override
     public TeacherDto getTeacherById(Long id) {
         Teacher teacher = teacherRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Teacher not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Teacher does not exists!"));
         return TeacherMapper.mapToTeacherDto(teacher);
     }
 
@@ -151,7 +170,7 @@ public class TeacherImpl implements TeacherService {
     @Transactional
     public void deleteTeacher(Long id) {
         Teacher teacher = teacherRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Teacher not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Teacher does not exists!"));
 
         teacher.setStatus(Status.INACTIVE);
         teacherRepository.save(teacher);

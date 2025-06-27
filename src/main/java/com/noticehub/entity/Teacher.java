@@ -44,7 +44,7 @@ public class Teacher {
     @Column(length = 500, nullable = false)
     private String address;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, unique = true, nullable = false)
     private String contact;
 
     @Lob
