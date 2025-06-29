@@ -63,7 +63,7 @@ public class StudentImpl implements StudentService {
         }
 
         Role studentRole = roleRepository.findByName("STUDENT")
-                .orElseThrow(() -> new ResourceNotFoundException("Role 'STUDENT' not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Role 'STUDENT' does not exists!"));
 
         User user = User.builder()
                 .email(studentDto.email())
@@ -75,10 +75,10 @@ public class StudentImpl implements StudentService {
         userRepository.save(user);
 
         Program program = programRepository.findById(studentDto.programId())
-                .orElseThrow(() -> new ResourceNotFoundException("Program not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Program does not exists!"));
 
         Semester semester = semesterRepository.findById(studentDto.semesterId())
-                .orElseThrow(() -> new ResourceNotFoundException("Semester not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Semester does not exists!"));
 
         Student student = StudentMapper.mapToStudent(studentDto, user, program, semester);
         Student saved = studentRepository.save(student);
@@ -88,8 +88,9 @@ public class StudentImpl implements StudentService {
 
     @Override
     public StudentDto updateStudent(Long id, StudentDto studentDto) {
+
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Student does not exists!"));
 
         User user = student.getUser();
 
@@ -104,10 +105,10 @@ public class StudentImpl implements StudentService {
         userRepository.save(user);
 
         Program program = programRepository.findById(studentDto.programId())
-                .orElseThrow(() -> new ResourceNotFoundException("Program not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Program does not exists!"));
 
         Semester semester = semesterRepository.findById(studentDto.semesterId())
-                .orElseThrow(() -> new ResourceNotFoundException("Semester not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Semester does not exists!"));
 
         student.setIdNumber(studentDto.idNumber());
         student.setFirstName(studentDto.firstName());
@@ -133,7 +134,7 @@ public class StudentImpl implements StudentService {
     @Override
     public StudentDto getStudentById(Long id) {
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Student does not exists!"));
 
         return StudentMapper.mapToStudentDto(student);
     }
@@ -143,7 +144,7 @@ public class StudentImpl implements StudentService {
     public void deleteStudent(Long id) {
 
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Student does not exists!"));
 
         student.setStatus(Status.INACTIVE);
         studentRepository.save(student);

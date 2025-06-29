@@ -3,6 +3,7 @@ package com.noticehub.mapper;
 import com.noticehub.dto.NoticeDto;
 import com.noticehub.entity.Notice;
 import com.noticehub.entity.NoticeCategory;
+import com.noticehub.entity.NoticePublished;
 
 public class NoticeMapper {
 

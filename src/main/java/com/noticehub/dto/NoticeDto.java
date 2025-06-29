@@ -8,5 +8,6 @@ public record NoticeDto(
         String description,
         byte[] file,
         LocalDateTime datetime,
-        Long noticeCategoryId ) {
+        Long noticeCategoryId
+) {
 }

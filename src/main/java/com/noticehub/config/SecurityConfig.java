@@ -36,7 +36,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()  // anyone can access login
                         .requestMatchers("/api/admin/**").hasRole("ADMIN") // only ADMIN can access these
-                        //.anyRequest().authenticated()  // other endpoints must be logged-in
+                        .requestMatchers("/api/shared/**").hasAnyRole("ADMIN", "TEACHER") // accessible by both ADMIN and TEACHER
+                        .anyRequest().authenticated()  // other endpoints must be logged-in
                 )
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
